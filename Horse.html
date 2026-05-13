@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Thử thách Mã Đi Tuần - Lưới 5x5</title>
+    <style>
+        :root {
+            --bg-color: #f0f2f5;
+            --cell-color: #ffffff;
+            --cell-border: #bdc3c7;
+            --knight-color: #2ecc71;
+            --visited-color: #3498db;
+            --valid-move-color: #f1c40f;
+            --text-color: #2c3e50;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+            margin: 0;
+        }
+
+        h1 { margin-bottom: 10px; }
+        .info { margin-bottom: 20px; text-align: center; }
+
+        #board {
+            display: grid;
+            grid-template-columns: repeat(5, 60px);
+            grid-template-rows: repeat(5, 60px);
+            gap: 5px;
+            border: 5px solid #34495e;
+            padding: 5px;
+            background-color: #34495e;
+            border-radius: 8px;
+        }
+
+        .cell {
+            width: 60px;
+            height: 60px;
+            background-color: var(--cell-color);
+            border-radius: 4px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            font-size: 1.2em;
+            cursor: pointer;
+            transition: all 0.2s;
+            user-select: none;
+        }
+
+        .cell.visited {
+            background-color: var(--visited-color);
+            color: white;
+        }
+
+        .cell.current {
+            background-color: var(--knight-color);
+            color: white;
+            box-shadow: inset 0 0 10px rgba(0,0,0,0.3);
+        }
+
+        .cell.valid-move {
+            background-color: var(--valid-move-color);
+            animation: pulse 1.5s infinite;
+        }
+
+        @keyframes pulse {
+            0% { opacity: 1; }
+            50% { opacity: 0.6; }
+            100% { opacity: 1; }
+        }
+
+        .controls {
+            margin-top: 30px;
+        }
+
+        button {
+            padding: 10px 20px;
+            font-size: 1em;
+            cursor: pointer;
+            background-color: #e74c3c;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            transition: background 0.3s;
+        }
+
+        button:hover { background-color: #c0392b; }
+        
+        #status {
+            margin-top: 15px;
+            font-weight: bold;
+            height: 24px;
+        }
+    </style>
+</head>
+<body>
+
+    <h1>Mã Đi Tuần (5x5)</h1>
+    <div class="info">
+        Di chuyển quân mã sao cho đi qua tất cả 25 ô duy nhất một lần.<br>
+        Số bước hiện tại: <span id="step-count">0</span>/25
+    </div>
+
+    <div id="board"></div>
+
+    <div id="status"></div>
+
+    <div class="controls">
+        <button onclick="resetGame()">Chơi lại</button>
+    </div>
+
+    <script>
+        const size = 5;
+        const boardElement = document.getElementById('board');
+        const stepCountElement = document.getElementById('step-count');
+        const statusElement = document.getElementById('status');
+        
+        let board = [];
+        let currentPos = null; // {r, c}
+        let visitedCount = 0;
+
+        function initBoard() {
+            boardElement.innerHTML = '';
+            board = Array(size).fill().map(() => Array(size).fill(false));
+            
+            for (let r = 0; r < size; r++) {
+                for (let c = 0; c < size; c++) {
+                    const cell = document.createElement('div');
+                    cell.className = 'cell';
+                    cell.dataset.r = r;
+                    cell.dataset.c = c;
+                    cell.onclick = () => handleCellClick(r, c);
+                    boardElement.appendChild(cell);
+                }
+            }
+        }
+
+        function handleCellClick(r, c) {
+            // Bước đầu tiên
+            if (currentPos === null) {
+                moveKnight(r, c);
+                return;
+            }
+
+            // Kiểm tra nước đi hợp lệ
+            if (isValidMove(currentPos.r, currentPos.c, r, c) && !board[r][c]) {
+                moveKnight(r, c);
+            }
+        }
+
+        function isValidMove(r1, c1, r2, c2) {
+            const dr = Math.abs(r1 - r2);
+            const dc = Math.abs(c1 - c2);
+            return (dr === 2 && dc === 1) || (dr === 1 && dc === 2);
+        }
+
+        function moveKnight(r, c) {
+            visitedCount++;
+            board[r][c] = visitedCount;
+            currentPos = { r, c };
+
+            updateDisplay();
+            checkGameState();
+        }
+
+        function updateDisplay() {
+            const cells = document.querySelectorAll('.cell');
+            cells.forEach(cell => {
+                const r = parseInt(cell.dataset.r);
+                const c = parseInt(cell.dataset.c);
+                
+                cell.className = 'cell';
+                cell.textContent = '';
+
+                if (board[r][c]) {
+                    cell.classList.add('visited');
+                    cell.textContent = board[r][c];
+                }
+
+                if (currentPos && currentPos.r === r && currentPos.c === c) {
+                    cell.classList.add('current');
+                } else if (currentPos && isValidMove(currentPos.r, currentPos.c, r, c) && !board[r][c]) {
+                    cell.classList.add('valid-move');
+                }
+            });
+
+            stepCountElement.textContent = visitedCount;
+        }
+
+        function checkGameState() {
+            if (visitedCount === size * size) {
+                statusElement.textContent = "Chúc mừng! Bạn đã hoàn thành thử thách!";
+                statusElement.style.color = "#2ecc71";
+                return;
+            }
+
+            // Kiểm tra xem còn nước đi nào không
+            let hasMove = false;
+            for (let r = 0; r < size; r++) {
+                for (let c = 0; c < size; c++) {
+                    if (isValidMove(currentPos.r, currentPos.c, r, c) && !board[r][c]) {
+                        hasMove = true;
+                        break;
+                    }
+                }
+            }
+
+            if (!hasMove) {
+                statusElement.textContent = "Hết nước đi! Vui lòng thử lại.";
+                statusElement.style.color = "#e74c3c";
+            }
+        }
+
+        function resetGame() {
+            currentPos = null;
+            visitedCount = 0;
+            statusElement.textContent = "";
+            initBoard();
+            stepCountElement.textContent = "0";
+        }
+
+        initBoard();
+    </script>
+</body>
+</html>
