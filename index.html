@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Thử thách Mã Đi Tuần - Lưới 5x5</title>
+    <title>Game Hub - SkillClup</title>
     <style>
         :root {
             --bg-color: #f0f2f5;
@@ -13,6 +13,9 @@
             --visited-color: #3498db;
             --valid-move-color: #f1c40f;
             --text-color: #2c3e50;
+            --queen-light: #ecf0f1;
+            --queen-dark: #95a5a6;
+            --queen-hover: #e74c3c;
         }
 
         body {
@@ -25,12 +28,71 @@
             justify-content: center;
             min-height: 100vh;
             margin: 0;
+            padding: 20px;
+            box-sizing: border-box;
         }
 
-        h1 { margin-bottom: 10px; }
-        .info { margin-bottom: 20px; text-align: center; }
+        h1 { margin-bottom: 10px; text-align: center; }
+        .info { margin-bottom: 20px; text-align: center; max-width: 500px; }
 
-        #board {
+        /* Menu Styles */
+        #menu-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        
+        .game-list {
+            display: flex;
+            gap: 20px;
+            margin-top: 20px;
+            flex-wrap: wrap;
+            justify-content: center;
+            max-width: 800px;
+        }
+        
+        .game-card {
+            background-color: white;
+            border: 2px solid #bdc3c7;
+            border-radius: 12px;
+            padding: 20px;
+            cursor: pointer;
+            text-align: center;
+            transition: transform 0.2s, box-shadow 0.2s, border-color 0.2s;
+            width: 220px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+        }
+        
+        .game-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+            border-color: #3498db;
+        }
+        
+        .game-card h3 {
+            margin: 0 0 10px 0;
+            color: #2c3e50;
+            font-size: 1.2em;
+        }
+
+        .game-card p {
+            margin: 0;
+            color: #7f8c8d;
+            font-size: 0.9em;
+        }
+
+        .hidden {
+            display: none !important;
+        }
+
+        .game-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        /* Knight Game Styles */
+        #knight-board {
             display: grid;
             grid-template-columns: repeat(5, 60px);
             grid-template-rows: repeat(5, 60px);
@@ -56,21 +118,39 @@
             user-select: none;
         }
 
-        .cell.visited {
-            background-color: var(--visited-color);
-            color: white;
+        .cell.visited { background-color: var(--visited-color); color: white; }
+        .cell.current { background-color: var(--knight-color); color: white; box-shadow: inset 0 0 10px rgba(0,0,0,0.3); }
+        .cell.valid-move { background-color: var(--valid-move-color); animation: pulse 1.5s infinite; }
+
+        /* Queens Game Styles */
+        #queens-board {
+            display: grid;
+            grid-template-columns: repeat(8, 45px);
+            grid-template-rows: repeat(8, 45px);
+            gap: 0;
+            border: 5px solid #34495e;
+            background-color: #34495e;
+            border-radius: 8px;
+            overflow: hidden;
         }
 
-        .cell.current {
-            background-color: var(--knight-color);
-            color: white;
-            box-shadow: inset 0 0 10px rgba(0,0,0,0.3);
+        .queens-cell {
+            width: 45px;
+            height: 45px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 28px;
+            cursor: pointer;
+            user-select: none;
+            transition: background-color 0.2s;
         }
 
-        .cell.valid-move {
-            background-color: var(--valid-move-color);
-            animation: pulse 1.5s infinite;
-        }
+        .queens-cell.light { background-color: var(--queen-light); }
+        .queens-cell.dark { background-color: var(--queen-dark); }
+        .queens-cell:hover { opacity: 0.8; }
+        .queens-cell.error { background-color: var(--queen-hover) !important; color: white; animation: shake 0.4s; }
+        .queens-cell.queen { color: #2c3e50; text-shadow: 0px 2px 4px rgba(0,0,0,0.3); }
 
         @keyframes pulse {
             0% { opacity: 1; }
@@ -78,157 +158,320 @@
             100% { opacity: 1; }
         }
 
+        @keyframes shake {
+            0% { transform: translateX(0); }
+            25% { transform: translateX(-3px); }
+            50% { transform: translateX(3px); }
+            75% { transform: translateX(-3px); }
+            100% { transform: translateX(0); }
+        }
+
         .controls {
             margin-top: 30px;
+            display: flex;
+            gap: 10px;
         }
 
         button {
             padding: 10px 20px;
             font-size: 1em;
             cursor: pointer;
-            background-color: #e74c3c;
+            background-color: #3498db;
             color: white;
             border: none;
             border-radius: 5px;
             transition: background 0.3s;
+            font-weight: bold;
         }
 
-        button:hover { background-color: #c0392b; }
+        button:hover { background-color: #2980b9; }
+        button.btn-reset { background-color: #e74c3c; }
+        button.btn-reset:hover { background-color: #c0392b; }
+        button.btn-back { background-color: #7f8c8d; }
+        button.btn-back:hover { background-color: #95a5a6; }
         
-        #status {
+        .status {
             margin-top: 15px;
             font-weight: bold;
             height: 24px;
+            text-align: center;
         }
     </style>
 </head>
 <body>
 
-    <h1>Mã Đi Tuần (5x5)</h1>
-    <div class="info">
-        Di chuyển quân mã sao cho đi qua tất cả 25 ô duy nhất một lần.<br>
-        Số bước hiện tại: <span id="step-count">0</span>/25
+    <!-- Main Menu -->
+    <div id="menu-container">
+        <h1>Chọn Game</h1>
+        <div class="game-list">
+            <div class="game-card" onclick="startGame('knight')">
+                <h3>Mã Đi Tuần (5x5)</h3>
+                <p>Thử thách di chuyển quân mã đi qua tất cả các ô trên bàn cờ.</p>
+            </div>
+            <div class="game-card" onclick="startGame('queens')">
+                <h3>8 Quân Hậu</h3>
+                <p>Đặt 8 quân hậu lên bàn cờ 8x8 sao cho không con nào ăn nhau.</p>
+            </div>
+            <div class="game-card" style="opacity: 0.6; cursor: default; border-style: dashed;">
+                <h3>Sắp ra mắt</h3>
+                <p>Các mini-game khác đang được phát triển...</p>
+            </div>
+        </div>
     </div>
 
-    <div id="board"></div>
+    <!-- Knight Game -->
+    <div id="knight-game-container" class="game-container hidden">
+        <h1>Mã Đi Tuần (5x5)</h1>
+        <div class="info">
+            Di chuyển quân mã sao cho đi qua tất cả 25 ô duy nhất một lần.<br>
+            Số bước hiện tại: <span id="knight-step-count">0</span>/25
+        </div>
 
-    <div id="status"></div>
+        <div id="knight-board"></div>
+        <div id="knight-status" class="status"></div>
 
-    <div class="controls">
-        <button onclick="resetGame()">Chơi lại</button>
+        <div class="controls">
+            <button class="btn-reset" onclick="resetKnightGame()">Chơi lại</button>
+            <button class="btn-back" onclick="showMenu()">Quay lại Menu</button>
+        </div>
+    </div>
+
+    <!-- Queens Game -->
+    <div id="queens-game-container" class="game-container hidden">
+        <h1>8 Quân Hậu</h1>
+        <div class="info">
+            Đặt 8 quân hậu lên bàn cờ 8x8 sao cho không có 2 quân hậu nào nằm trên cùng một hàng, một cột, hoặc một đường chéo.<br>
+            Số hậu đã đặt: <span id="queens-count">0</span>/8
+        </div>
+
+        <div id="queens-board"></div>
+        <div id="queens-status" class="status"></div>
+
+        <div class="controls">
+            <button class="btn-reset" onclick="resetQueensGame()">Chơi lại</button>
+            <button class="btn-back" onclick="showMenu()">Quay lại Menu</button>
+        </div>
     </div>
 
     <script>
-        const size = 5;
-        const boardElement = document.getElementById('board');
-        const stepCountElement = document.getElementById('step-count');
-        const statusElement = document.getElementById('status');
-        
-        let board = [];
-        let currentPos = null; // {r, c}
-        let visitedCount = 0;
+        // --- Navigation Logic ---
+        function showMenu() {
+            document.getElementById('menu-container').classList.remove('hidden');
+            document.getElementById('knight-game-container').classList.add('hidden');
+            document.getElementById('queens-game-container').classList.add('hidden');
+        }
 
-        function initBoard() {
-            boardElement.innerHTML = '';
-            board = Array(size).fill().map(() => Array(size).fill(false));
+        function startGame(gameId) {
+            document.getElementById('menu-container').classList.add('hidden');
+            if (gameId === 'knight') {
+                document.getElementById('knight-game-container').classList.remove('hidden');
+                resetKnightGame();
+            } else if (gameId === 'queens') {
+                document.getElementById('queens-game-container').classList.remove('hidden');
+                resetQueensGame();
+            }
+        }
+
+        // --- Knight Game Logic ---
+        const knightSize = 5;
+        const knightBoardElement = document.getElementById('knight-board');
+        const knightStepCountElement = document.getElementById('knight-step-count');
+        const knightStatusElement = document.getElementById('knight-status');
+        
+        let knightBoard = [];
+        let knightCurrentPos = null;
+        let knightVisitedCount = 0;
+
+        function initKnightBoard() {
+            knightBoardElement.innerHTML = '';
+            knightBoard = Array(knightSize).fill().map(() => Array(knightSize).fill(false));
             
-            for (let r = 0; r < size; r++) {
-                for (let c = 0; c < size; c++) {
+            for (let r = 0; r < knightSize; r++) {
+                for (let c = 0; c < knightSize; c++) {
                     const cell = document.createElement('div');
                     cell.className = 'cell';
                     cell.dataset.r = r;
                     cell.dataset.c = c;
-                    cell.onclick = () => handleCellClick(r, c);
-                    boardElement.appendChild(cell);
+                    cell.onclick = () => handleKnightCellClick(r, c);
+                    knightBoardElement.appendChild(cell);
                 }
             }
         }
 
-        function handleCellClick(r, c) {
-            // Bước đầu tiên
-            if (currentPos === null) {
+        function handleKnightCellClick(r, c) {
+            if (knightCurrentPos === null) {
                 moveKnight(r, c);
                 return;
             }
-
-            // Kiểm tra nước đi hợp lệ
-            if (isValidMove(currentPos.r, currentPos.c, r, c) && !board[r][c]) {
+            if (isValidKnightMove(knightCurrentPos.r, knightCurrentPos.c, r, c) && !knightBoard[r][c]) {
                 moveKnight(r, c);
             }
         }
 
-        function isValidMove(r1, c1, r2, c2) {
+        function isValidKnightMove(r1, c1, r2, c2) {
             const dr = Math.abs(r1 - r2);
             const dc = Math.abs(c1 - c2);
             return (dr === 2 && dc === 1) || (dr === 1 && dc === 2);
         }
 
         function moveKnight(r, c) {
-            visitedCount++;
-            board[r][c] = visitedCount;
-            currentPos = { r, c };
-
-            updateDisplay();
-            checkGameState();
+            knightVisitedCount++;
+            knightBoard[r][c] = knightVisitedCount;
+            knightCurrentPos = { r, c };
+            updateKnightDisplay();
+            checkKnightGameState();
         }
 
-        function updateDisplay() {
-            const cells = document.querySelectorAll('.cell');
+        function updateKnightDisplay() {
+            const cells = knightBoardElement.querySelectorAll('.cell');
             cells.forEach(cell => {
                 const r = parseInt(cell.dataset.r);
                 const c = parseInt(cell.dataset.c);
-                
                 cell.className = 'cell';
                 cell.textContent = '';
 
-                if (board[r][c]) {
+                if (knightBoard[r][c]) {
                     cell.classList.add('visited');
-                    cell.textContent = board[r][c];
+                    cell.textContent = knightBoard[r][c];
                 }
 
-                if (currentPos && currentPos.r === r && currentPos.c === c) {
+                if (knightCurrentPos && knightCurrentPos.r === r && knightCurrentPos.c === c) {
                     cell.classList.add('current');
-                } else if (currentPos && isValidMove(currentPos.r, currentPos.c, r, c) && !board[r][c]) {
+                } else if (knightCurrentPos && isValidKnightMove(knightCurrentPos.r, knightCurrentPos.c, r, c) && !knightBoard[r][c]) {
                     cell.classList.add('valid-move');
                 }
             });
-
-            stepCountElement.textContent = visitedCount;
+            knightStepCountElement.textContent = knightVisitedCount;
         }
 
-        function checkGameState() {
-            if (visitedCount === size * size) {
-                statusElement.textContent = "Chúc mừng! Bạn đã hoàn thành thử thách!";
-                statusElement.style.color = "#2ecc71";
+        function checkKnightGameState() {
+            if (knightVisitedCount === knightSize * knightSize) {
+                knightStatusElement.textContent = "Chúc mừng! Bạn đã hoàn thành thử thách!";
+                knightStatusElement.style.color = "#2ecc71";
                 return;
             }
-
-            // Kiểm tra xem còn nước đi nào không
             let hasMove = false;
-            for (let r = 0; r < size; r++) {
-                for (let c = 0; c < size; c++) {
-                    if (isValidMove(currentPos.r, currentPos.c, r, c) && !board[r][c]) {
+            for (let r = 0; r < knightSize; r++) {
+                for (let c = 0; c < knightSize; c++) {
+                    if (isValidKnightMove(knightCurrentPos.r, knightCurrentPos.c, r, c) && !knightBoard[r][c]) {
                         hasMove = true;
                         break;
                     }
                 }
             }
-
             if (!hasMove) {
-                statusElement.textContent = "Hết nước đi! Vui lòng thử lại.";
-                statusElement.style.color = "#e74c3c";
+                knightStatusElement.textContent = "Hết nước đi! Vui lòng thử lại.";
+                knightStatusElement.style.color = "#e74c3c";
             }
         }
 
-        function resetGame() {
-            currentPos = null;
-            visitedCount = 0;
-            statusElement.textContent = "";
-            initBoard();
-            stepCountElement.textContent = "0";
+        function resetKnightGame() {
+            knightCurrentPos = null;
+            knightVisitedCount = 0;
+            knightStatusElement.textContent = "";
+            initKnightBoard();
+            knightStepCountElement.textContent = "0";
         }
 
-        initBoard();
+        // --- Queens Game Logic ---
+        const queensSize = 8;
+        const queensBoardElement = document.getElementById('queens-board');
+        const queensCountElement = document.getElementById('queens-count');
+        const queensStatusElement = document.getElementById('queens-status');
+
+        let queensBoard = []; // 2D array of booleans
+        let placedQueensCount = 0;
+
+        function initQueensBoard() {
+            queensBoardElement.innerHTML = '';
+            queensBoard = Array(queensSize).fill().map(() => Array(queensSize).fill(false));
+            
+            for (let r = 0; r < queensSize; r++) {
+                for (let c = 0; c < queensSize; c++) {
+                    const cell = document.createElement('div');
+                    const isLight = (r + c) % 2 === 0;
+                    cell.className = `queens-cell ${isLight ? 'light' : 'dark'}`;
+                    cell.dataset.r = r;
+                    cell.dataset.c = c;
+                    cell.onclick = () => handleQueenCellClick(r, c, cell);
+                    queensBoardElement.appendChild(cell);
+                }
+            }
+        }
+
+        function handleQueenCellClick(r, c, cellElement) {
+            if (placedQueensCount === queensSize && !queensBoard[r][c]) {
+                // Already won or max queens, ignore placing new ones unless we want to allow removing
+                queensStatusElement.textContent = "Bạn đã đặt đủ 8 quân hậu. Hãy xóa bớt nếu muốn đổi.";
+                queensStatusElement.style.color = "#e67e22";
+                return;
+            }
+
+            if (queensBoard[r][c]) {
+                // Remove queen
+                queensBoard[r][c] = false;
+                placedQueensCount--;
+                cellElement.classList.remove('queen');
+                cellElement.innerHTML = '';
+                queensStatusElement.textContent = ""; // Clear any error message
+            } else {
+                // Check if placement is valid
+                if (isQueenSafe(r, c)) {
+                    queensBoard[r][c] = true;
+                    placedQueensCount++;
+                    cellElement.classList.add('queen');
+                    cellElement.innerHTML = '&#9819;'; // Queen unicode
+                    queensStatusElement.textContent = "";
+                } else {
+                    // Invalid placement visual feedback
+                    cellElement.classList.add('error');
+                    setTimeout(() => cellElement.classList.remove('error'), 400);
+                    queensStatusElement.textContent = "Vị trí không hợp lệ! Bị tấn công.";
+                    queensStatusElement.style.color = "#e74c3c";
+                }
+            }
+            
+            queensCountElement.textContent = placedQueensCount;
+            checkQueensGameState();
+        }
+
+        function isQueenSafe(row, col) {
+            // 1. Kiểm tra hàng và cột
+            for (let i = 0; i < queensSize; i++) {
+                if (queensBoard[row][i]) return false; // Trùng hàng
+                if (queensBoard[i][col]) return false; // Trùng cột
+            }
+
+            // 2. Kiểm tra các đường chéo
+            for (let i = 0; i < queensSize; i++) {
+                for (let j = 0; j < queensSize; j++) { // Đã sửa: j < queensSize
+                    if (queensBoard[i][j]) {
+                        // Công thức kiểm tra đường chéo: hiệu hoặc tổng tọa độ bằng nhau
+                        if (Math.abs(row - i) === Math.abs(col - j)) {
+                            return false;
+                        }
+                    }
+                }
+            }
+            return true;
+        }
+        function checkQueensGameState() {
+            if (placedQueensCount === queensSize) {
+                queensStatusElement.textContent = "Chúc mừng! Bạn đã giải được Bài toán 8 Quân Hậu!";
+                queensStatusElement.style.color = "#2ecc71";
+            }
+        }
+
+        function resetQueensGame() {
+            placedQueensCount = 0;
+            queensStatusElement.textContent = "";
+            initQueensBoard();
+            queensCountElement.textContent = "0";
+        }
+
+        // Init boards once
+        initKnightBoard();
+        initQueensBoard();
     </script>
 </body>
 </html>
