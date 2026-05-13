@@ -166,6 +166,40 @@
             100% { transform: translateX(0); }
         }
 
+        /* Lights Out Styles */
+        #lights-board {
+            display: grid;
+            grid-template-columns: repeat(5, 60px);
+            grid-template-rows: repeat(5, 60px);
+            gap: 8px;
+            background-color: #34495e;
+            padding: 10px;
+            border-radius: 8px;
+        }
+
+        .light-cell {
+            width: 60px;
+            height: 60px;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            border: none;
+        }
+
+        .light-cell.on {
+            background-color: #f1c40f;
+            box-shadow: 0 0 15px #f1c40f;
+        }
+
+        .light-cell.off {
+            background-color: #7f8c8d;
+            box-shadow: inset 0 0 10px rgba(0,0,0,0.2);
+        }
+
+        .light-cell:hover {
+            transform: scale(1.05);
+        }
+
         .controls {
             margin-top: 30px;
             display: flex;
@@ -212,6 +246,10 @@
                 <h3>8 Quân Hậu</h3>
                 <p>Đặt 8 quân hậu lên bàn cờ 8x8 sao cho không con nào ăn nhau.</p>
             </div>
+            <div class="game-card" onclick="startGame('lights')">
+                <h3>Đèn Tắt (Lights Out)</h3>
+                <p>Click để tắt toàn bộ lưới đèn 5x5.</p>
+            </div>
             <div class="game-card" style="opacity: 0.6; cursor: default; border-style: dashed;">
                 <h3>Sắp ra mắt</h3>
                 <p>Các mini-game khác đang được phát triển...</p>
@@ -253,23 +291,39 @@
         </div>
     </div>
 
+    <!-- Lights Out Game -->
+    <div id="lights-game-container" class="game-container hidden">
+        <h1>Đèn Tắt (Lights Out)</h1>
+        <div class="info">
+            Click vào một ô để đảo ngược trạng thái của nó và 4 ô xung quanh. Mục tiêu là làm tắt toàn bộ đèn (màu xám).
+        </div>
+
+        <div id="lights-board"></div>
+        <div id="lights-status" class="status"></div>
+
+        <div class="controls">
+            <button class="btn-reset" onclick="resetLightsGame()">Chơi lại</button>
+            <button class="btn-back" onclick="showMenu()">Quay lại Menu</button>
+        </div>
+    </div>
+
     <script>
         // --- Navigation Logic ---
         function showMenu() {
             document.getElementById('menu-container').classList.remove('hidden');
-            document.getElementById('knight-game-container').classList.add('hidden');
-            document.getElementById('queens-game-container').classList.add('hidden');
+            document.querySelectorAll('.game-container').forEach(c => c.classList.add('hidden'));
         }
 
         function startGame(gameId) {
             document.getElementById('menu-container').classList.add('hidden');
-            if (gameId === 'knight') {
-                document.getElementById('knight-game-container').classList.remove('hidden');
-                resetKnightGame();
-            } else if (gameId === 'queens') {
-                document.getElementById('queens-game-container').classList.remove('hidden');
-                resetQueensGame();
-            }
+            document.querySelectorAll('.game-container').forEach(c => c.classList.add('hidden'));
+            
+            const containerId = gameId + '-game-container';
+            document.getElementById(containerId).classList.remove('hidden');
+            
+            if (gameId === 'knight') resetKnightGame();
+            else if (gameId === 'queens') resetQueensGame();
+            else if (gameId === 'lights') resetLightsGame();
         }
 
         // --- Knight Game Logic ---
@@ -401,29 +455,25 @@
 
         function handleQueenCellClick(r, c, cellElement) {
             if (placedQueensCount === queensSize && !queensBoard[r][c]) {
-                // Already won or max queens, ignore placing new ones unless we want to allow removing
                 queensStatusElement.textContent = "Bạn đã đặt đủ 8 quân hậu. Hãy xóa bớt nếu muốn đổi.";
                 queensStatusElement.style.color = "#e67e22";
                 return;
             }
 
             if (queensBoard[r][c]) {
-                // Remove queen
                 queensBoard[r][c] = false;
                 placedQueensCount--;
                 cellElement.classList.remove('queen');
                 cellElement.innerHTML = '';
-                queensStatusElement.textContent = ""; // Clear any error message
+                queensStatusElement.textContent = ""; 
             } else {
-                // Check if placement is valid
                 if (isQueenSafe(r, c)) {
                     queensBoard[r][c] = true;
                     placedQueensCount++;
                     cellElement.classList.add('queen');
-                    cellElement.innerHTML = '&#9819;'; // Queen unicode
+                    cellElement.innerHTML = '&#9819;'; 
                     queensStatusElement.textContent = "";
                 } else {
-                    // Invalid placement visual feedback
                     cellElement.classList.add('error');
                     setTimeout(() => cellElement.classList.remove('error'), 400);
                     queensStatusElement.textContent = "Vị trí không hợp lệ! Bị tấn công.";
@@ -436,17 +486,14 @@
         }
 
         function isQueenSafe(row, col) {
-            // 1. Kiểm tra hàng và cột
             for (let i = 0; i < queensSize; i++) {
-                if (queensBoard[row][i]) return false; // Trùng hàng
-                if (queensBoard[i][col]) return false; // Trùng cột
+                if (queensBoard[row][i]) return false;
+                if (queensBoard[i][col]) return false;
             }
 
-            // 2. Kiểm tra các đường chéo
             for (let i = 0; i < queensSize; i++) {
-                for (let j = 0; j < queensSize; j++) { // Đã sửa: j < queensSize
+                for (let j = 0; j < queensSize; j++) {
                     if (queensBoard[i][j]) {
-                        // Công thức kiểm tra đường chéo: hiệu hoặc tổng tọa độ bằng nhau
                         if (Math.abs(row - i) === Math.abs(col - j)) {
                             return false;
                         }
@@ -455,6 +502,7 @@
             }
             return true;
         }
+
         function checkQueensGameState() {
             if (placedQueensCount === queensSize) {
                 queensStatusElement.textContent = "Chúc mừng! Bạn đã giải được Bài toán 8 Quân Hậu!";
@@ -469,9 +517,86 @@
             queensCountElement.textContent = "0";
         }
 
+        // --- Lights Out Logic ---
+        const lightsSize = 5;
+        const lightsBoardElement = document.getElementById('lights-board');
+        const lightsStatusElement = document.getElementById('lights-status');
+        let lightsBoard = [];
+
+        function initLightsBoard() {
+            lightsBoardElement.innerHTML = '';
+            lightsBoard = Array(lightsSize).fill().map(() => Array(lightsSize).fill(false));
+
+            for (let r = 0; r < lightsSize; r++) {
+                for (let c = 0; c < lightsSize; c++) {
+                    const cell = document.createElement('div');
+                    cell.className = 'light-cell';
+                    cell.id = `light-${r}-${c}`;
+                    cell.onclick = () => toggleLights(r, c);
+                    lightsBoardElement.appendChild(cell);
+                }
+            }
+            shuffleLights(); // Tạo một màn chơi có thể giải được
+        }
+
+        function toggleLights(r, c) {
+            const coords = [
+                [r, c], [r-1, c], [r+1, c], [r, c-1], [r, c+1]
+            ];
+
+            coords.forEach(([row, col]) => {
+                if (row >= 0 && row < lightsSize && col >= 0 && col < lightsSize) {
+                    lightsBoard[row][col] = !lightsBoard[row][col];
+                }
+            });
+
+            renderLights();
+            checkLightsWin();
+        }
+
+        function renderLights() {
+            for (let r = 0; r < lightsSize; r++) {
+                for (let c = 0; c < lightsSize; c++) {
+                    const cell = document.getElementById(`light-${r}-${c}`);
+                    cell.className = `light-cell ${lightsBoard[r][c] ? 'on' : 'off'}`;
+                }
+            }
+        }
+
+        function shuffleLights() {
+            for (let i = 0; i < 15; i++) {
+                const r = Math.floor(Math.random() * lightsSize);
+                const c = Math.floor(Math.random() * lightsSize);
+                
+                const coords = [
+                    [r, c], [r-1, c], [r+1, c], [r, c-1], [r, c+1]
+                ];
+                coords.forEach(([row, col]) => {
+                    if (row >= 0 && row < lightsSize && col >= 0 && col < lightsSize) {
+                        lightsBoard[row][col] = !lightsBoard[row][col];
+                    }
+                });
+            }
+            renderLights();
+            lightsStatusElement.textContent = ""; 
+        }
+
+        function checkLightsWin() {
+            const isAllOff = lightsBoard.every(row => row.every(cell => !cell));
+            if (isAllOff) {
+                lightsStatusElement.textContent = "Tuyệt vời! Bạn đã tắt hết đèn!";
+                lightsStatusElement.style.color = "#2ecc71";
+            }
+        }
+
+        function resetLightsGame() {
+            initLightsBoard();
+        }
+
         // Init boards once
         initKnightBoard();
         initQueensBoard();
+        initLightsBoard();
     </script>
 </body>
 </html>
