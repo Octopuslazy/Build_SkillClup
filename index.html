@@ -122,6 +122,38 @@
         .cell.current { background-color: var(--knight-color); color: white; box-shadow: inset 0 0 10px rgba(0,0,0,0.3); }
         .cell.valid-move { background-color: var(--valid-move-color); animation: pulse 1.5s infinite; }
 
+        /* Knight Game 2 Styles */
+        #knight2-board {
+            display: grid;
+            grid-template-columns: repeat(8, 45px);
+            grid-template-rows: repeat(8, 45px);
+            gap: 2px;
+            border: 5px solid #34495e;
+            padding: 5px;
+            background-color: #34495e;
+            border-radius: 8px;
+        }
+
+        .knight2-cell {
+            width: 45px;
+            height: 45px;
+            background-color: var(--cell-color);
+            border-radius: 4px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            font-size: 1.1em;
+            cursor: pointer;
+            transition: all 0.2s;
+            user-select: none;
+        }
+
+        .knight2-cell.visited { background-color: var(--visited-color); color: white; }
+        .knight2-cell.current { background-color: var(--knight-color); color: white; box-shadow: inset 0 0 10px rgba(0,0,0,0.3); }
+        .knight2-cell.valid-move { background-color: var(--valid-move-color); animation: pulse 1.5s infinite; }
+        .knight2-cell.hole { visibility: hidden; pointer-events: none; }
+
         /* Queens Game Styles */
         #queens-board {
             display: grid;
@@ -242,6 +274,10 @@
                 <h3>Mã Đi Tuần (5x5)</h3>
                 <p>Thử thách di chuyển quân mã đi qua tất cả các ô trên bàn cờ.</p>
             </div>
+            <div class="game-card" onclick="startGame('knight2')">
+                <h3>Mã Đi Tuần 2 (8x8)</h3>
+                <p>Thử thách di chuyển quân mã qua lưới 8x8 bị khoét 4 ô ở giữa.</p>
+            </div>
             <div class="game-card" onclick="startGame('queens')">
                 <h3>8 Quân Hậu</h3>
                 <p>Đặt 8 quân hậu lên bàn cờ 8x8 sao cho không con nào ăn nhau.</p>
@@ -270,6 +306,23 @@
 
         <div class="controls">
             <button class="btn-reset" onclick="resetKnightGame()">Chơi lại</button>
+            <button class="btn-back" onclick="showMenu()">Quay lại Menu</button>
+        </div>
+    </div>
+
+    <!-- Knight Game 2 -->
+    <div id="knight2-game-container" class="game-container hidden">
+        <h1>Mã Đi Tuần 2 (8x8 Khuyết)</h1>
+        <div class="info">
+            Di chuyển quân mã đi qua 60 ô hợp lệ duy nhất một lần (trừ 4 ô ở giữa).<br>
+            Số bước hiện tại: <span id="knight2-step-count">0</span>/60
+        </div>
+
+        <div id="knight2-board"></div>
+        <div id="knight2-status" class="status"></div>
+
+        <div class="controls">
+            <button class="btn-reset" onclick="resetKnight2Game()">Chơi lại</button>
             <button class="btn-back" onclick="showMenu()">Quay lại Menu</button>
         </div>
     </div>
@@ -322,8 +375,16 @@
             document.getElementById(containerId).classList.remove('hidden');
             
             if (gameId === 'knight') resetKnightGame();
+            else if (gameId === 'knight2') resetKnight2Game();
             else if (gameId === 'queens') resetQueensGame();
             else if (gameId === 'lights') resetLightsGame();
+        }
+
+        // Shared Logic for both Knight games
+        function isValidKnightMove(r1, c1, r2, c2) {
+            const dr = Math.abs(r1 - r2);
+            const dc = Math.abs(c1 - c2);
+            return (dr === 2 && dc === 1) || (dr === 1 && dc === 2);
         }
 
         // --- Knight Game Logic ---
@@ -360,12 +421,6 @@
             if (isValidKnightMove(knightCurrentPos.r, knightCurrentPos.c, r, c) && !knightBoard[r][c]) {
                 moveKnight(r, c);
             }
-        }
-
-        function isValidKnightMove(r1, c1, r2, c2) {
-            const dr = Math.abs(r1 - r2);
-            const dc = Math.abs(c1 - c2);
-            return (dr === 2 && dc === 1) || (dr === 1 && dc === 2);
         }
 
         function moveKnight(r, c) {
@@ -426,6 +481,114 @@
             initKnightBoard();
             knightStepCountElement.textContent = "0";
         }
+
+        // --- Knight Game 2 Logic ---
+        const knight2Size = 8;
+        const knight2BoardElement = document.getElementById('knight2-board');
+        const knight2StepCountElement = document.getElementById('knight2-step-count');
+        const knight2StatusElement = document.getElementById('knight2-status');
+        
+        let knight2Board = [];
+        let knight2CurrentPos = null;
+        let knight2VisitedCount = 0;
+        const knight2TotalCells = 60;
+
+        function isHole(r, c) {
+            return (r === 3 || r === 4) && (c === 3 || c === 4);
+        }
+
+        function initKnight2Board() {
+            knight2BoardElement.innerHTML = '';
+            knight2Board = Array(knight2Size).fill().map(() => Array(knight2Size).fill(false));
+            
+            for (let r = 0; r < knight2Size; r++) {
+                for (let c = 0; c < knight2Size; c++) {
+                    const cell = document.createElement('div');
+                    cell.className = 'knight2-cell';
+                    if (isHole(r, c)) {
+                        cell.classList.add('hole');
+                        knight2Board[r][c] = -1; // Mark hole so it's treated as visited/blocked
+                    } else {
+                        cell.dataset.r = r;
+                        cell.dataset.c = c;
+                        cell.onclick = () => handleKnight2CellClick(r, c);
+                    }
+                    knight2BoardElement.appendChild(cell);
+                }
+            }
+        }
+
+        function handleKnight2CellClick(r, c) {
+            if (isHole(r, c)) return;
+            if (knight2CurrentPos === null) {
+                moveKnight2(r, c);
+                return;
+            }
+            if (isValidKnightMove(knight2CurrentPos.r, knight2CurrentPos.c, r, c) && !knight2Board[r][c]) {
+                moveKnight2(r, c);
+            }
+        }
+
+        function moveKnight2(r, c) {
+            knight2VisitedCount++;
+            knight2Board[r][c] = knight2VisitedCount;
+            knight2CurrentPos = { r, c };
+            updateKnight2Display();
+            checkKnight2GameState();
+        }
+
+        function updateKnight2Display() {
+            const cells = knight2BoardElement.querySelectorAll('.knight2-cell');
+            cells.forEach(cell => {
+                if (cell.classList.contains('hole')) return;
+                const r = parseInt(cell.dataset.r);
+                const c = parseInt(cell.dataset.c);
+                cell.className = 'knight2-cell';
+                cell.textContent = '';
+
+                if (knight2Board[r][c] && knight2Board[r][c] !== -1) {
+                    cell.classList.add('visited');
+                    cell.textContent = knight2Board[r][c];
+                }
+
+                if (knight2CurrentPos && knight2CurrentPos.r === r && knight2CurrentPos.c === c) {
+                    cell.classList.add('current');
+                } else if (knight2CurrentPos && isValidKnightMove(knight2CurrentPos.r, knight2CurrentPos.c, r, c) && !knight2Board[r][c]) {
+                    cell.classList.add('valid-move');
+                }
+            });
+            knight2StepCountElement.textContent = knight2VisitedCount;
+        }
+
+        function checkKnight2GameState() {
+            if (knight2VisitedCount === knight2TotalCells) {
+                knight2StatusElement.textContent = "Chúc mừng! Bạn đã hoàn thành thử thách!";
+                knight2StatusElement.style.color = "#2ecc71";
+                return;
+            }
+            let hasMove = false;
+            for (let r = 0; r < knight2Size; r++) {
+                for (let c = 0; c < knight2Size; c++) {
+                    if (!isHole(r, c) && isValidKnightMove(knight2CurrentPos.r, knight2CurrentPos.c, r, c) && !knight2Board[r][c]) {
+                        hasMove = true;
+                        break;
+                    }
+                }
+            }
+            if (!hasMove) {
+                knight2StatusElement.textContent = "Hết nước đi! Vui lòng thử lại.";
+                knight2StatusElement.style.color = "#e74c3c";
+            }
+        }
+
+        function resetKnight2Game() {
+            knight2CurrentPos = null;
+            knight2VisitedCount = 0;
+            knight2StatusElement.textContent = "";
+            initKnight2Board();
+            knight2StepCountElement.textContent = "0";
+        }
+
 
         // --- Queens Game Logic ---
         const queensSize = 8;
@@ -595,6 +758,7 @@
 
         // Init boards once
         initKnightBoard();
+        initKnight2Board();
         initQueensBoard();
         initLightsBoard();
     </script>
