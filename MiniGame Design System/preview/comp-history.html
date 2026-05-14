@@ -1,0 +1,24 @@
+<!doctype html>
+<html><head><meta charset="utf-8"><link rel="stylesheet" href="../colors_and_type.css">
+<style>
+  html,body{margin:0;background:var(--mg-bg-1);color:var(--mg-text-1);font-family:var(--mg-font-ui);padding:24px;}
+  .stack{display:flex;flex-direction:column;gap:14px;}
+  .row{display:flex;justify-content:space-between;align-items:center;padding:10px 14px;background:var(--mg-surface-1);border:1px solid var(--mg-border);border-radius:12px;}
+  .row.active{background:rgba(250,204,21,.08);border-color:rgba(250,204,21,.35);}
+  .step{display:flex;align-items:center;gap:10px;font:var(--mg-body);}
+  .n{font:700 13px var(--mg-font-mono);width:24px;color:var(--mg-text-3);}
+  .row.active .n{color:#FDE68A;}
+  .coord{font:600 13px var(--mg-font-mono);color:var(--mg-text-1);}
+  .row.active .coord{color:#FACC15;}
+  .arrow{color:var(--mg-text-3);font-size:14px;}
+</style></head>
+<body>
+<div class="stack">
+  <div style="font:var(--mg-title);color:var(--mg-text-1);">Move History</div>
+  <div class="row"><div class="step"><span class="n">8</span><span>Knight to</span></div><span class="coord">C3</span></div>
+  <div class="row"><div class="step"><span class="n">9</span><span>Knight to</span></div><span class="coord">D5</span></div>
+  <div class="row"><div class="step"><span class="n">10</span><span>Knight to</span></div><span class="coord">E7</span></div>
+  <div class="row"><div class="step"><span class="n">11</span><span>Knight to</span></div><span class="coord">G6</span></div>
+  <div class="row active"><div class="step"><span class="n">12</span><span>Knight to</span></div><span class="coord">E5</span></div>
+</div>
+</body></html>

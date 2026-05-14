@@ -1,0 +1,17 @@
+<!doctype html>
+<html><head><meta charset="utf-8"><link rel="stylesheet" href="../colors_and_type.css">
+<style>
+  html,body{margin:0;background:var(--mg-bg-1);color:var(--mg-text-1);font-family:var(--mg-font-ui);}
+  .wrap{padding:24px;display:grid;grid-template-columns:repeat(4,1fr);gap:12px;}
+  .sw{border-radius:14px;overflow:hidden;border:1px solid var(--mg-border);background:var(--mg-surface-1);}
+  .chip{aspect-ratio:1.6/1;display:flex;align-items:flex-end;justify-content:flex-start;padding:10px 12px;font:var(--mg-eyebrow);letter-spacing:.14em;color:rgba(15,23,42,.7);}
+  .meta{padding:10px 12px;display:flex;flex-direction:column;gap:2px;}
+  .name{font:var(--mg-body-sm);color:var(--mg-text-1);}
+  .hex{font:var(--mg-mono);color:var(--mg-text-3);font-size:11px;}
+</style></head>
+<body><div class="wrap">
+  <div class="sw"><div class="chip" style="background:#22D3EE">ACCENT</div><div class="meta"><span class="name">accent-400</span><span class="hex">#22D3EE</span></div></div>
+  <div class="sw"><div class="chip" style="background:#22C55E">SUCCESS</div><div class="meta"><span class="name">success</span><span class="hex">#22C55E</span></div></div>
+  <div class="sw"><div class="chip" style="background:#F59E0B">WARNING</div><div class="meta"><span class="name">warning</span><span class="hex">#F59E0B</span></div></div>
+  <div class="sw"><div class="chip" style="background:#EF4444;color:rgba(255,255,255,.85)">DANGER</div><div class="meta"><span class="name">danger</span><span class="hex">#EF4444</span></div></div>
+</div></body></html>

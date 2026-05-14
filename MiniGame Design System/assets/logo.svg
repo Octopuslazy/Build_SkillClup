@@ -1,0 +1,26 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 220 56" fill="none">
+  <defs>
+    <linearGradient id="mgLogoGrad" x1="0" y1="0" x2="56" y2="56" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#A5B4FC"></stop>
+      <stop offset=".5" stop-color="#6366F1"></stop>
+      <stop offset="1" stop-color="#22D3EE"></stop>
+    </linearGradient>
+    <linearGradient id="mgLogoCrown" x1="0" y1="0" x2="40" y2="40" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#FACC15"></stop>
+      <stop offset="1" stop-color="#F59E0B"></stop>
+    </linearGradient>
+  </defs>
+  
+  <path d="M28 4 L48 14 V38 L28 48 L8 38 V14 Z" fill="#0F172A" stroke="url(#mgLogoGrad)" stroke-width="1.5"></path>
+  
+  <g transform="translate(13 16)">
+    <path d="M0 14 L3 4 L8 10 L15 2 L22 10 L27 4 L30 14 Z" fill="url(#mgLogoCrown)"></path>
+    <rect x="0" y="14" width="30" height="4" rx="1" fill="url(#mgLogoCrown)"></rect>
+    <circle cx="3" cy="4" r="1.6" fill="#FDE68A"></circle>
+    <circle cx="15" cy="2" r="1.6" fill="#FDE68A"></circle>
+    <circle cx="27" cy="4" r="1.6" fill="#FDE68A"></circle>
+  </g>
+  
+  <text x="62" y="28" font-family="&#39;Space Grotesk&#39;, sans-serif" font-weight="700" font-size="22" letter-spacing="-0.02em" fill="#F8FAFC">MINI<tspan fill="url(#mgLogoGrad)">GAME</tspan></text>
+  <text x="62" y="44" font-family="&#39;Space Grotesk&#39;, sans-serif" font-weight="600" font-size="8" letter-spacing="0.28em" fill="#94A3B8">TRAIN YOUR BRAIN</text>
+</svg>

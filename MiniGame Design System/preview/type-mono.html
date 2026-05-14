@@ -1,0 +1,19 @@
+<!doctype html>
+<html><head><meta charset="utf-8"><link rel="stylesheet" href="../colors_and_type.css">
+<style>
+  html,body{margin:0;background:var(--mg-bg-1);color:var(--mg-text-1);font-family:var(--mg-font-ui);padding:24px;}
+  .grid{display:grid;grid-template-columns:repeat(4,1fr);gap:16px;}
+  .tile{background:var(--mg-surface-1);border:1px solid var(--mg-border);border-radius:14px;padding:18px;display:flex;flex-direction:column;gap:8px;}
+  .num{font:var(--mg-font-mono);font-weight:700;font-size:32px;color:var(--mg-text-1);font-feature-settings:"tnum" 1;letter-spacing:-0.02em;}
+  .num.acc{color:#22D3EE;}
+  .lbl{font:var(--mg-eyebrow);text-transform:uppercase;letter-spacing:.16em;color:var(--mg-text-3);}
+  .sub{font:var(--mg-mono);color:var(--mg-text-2);font-size:13px;}
+</style></head>
+<body>
+<div class="grid">
+  <div class="tile"><span class="lbl">Moves</span><span class="num">12</span><span class="sub">JetBrains Mono</span></div>
+  <div class="tile"><span class="lbl">Timer</span><span class="num acc">03:42</span><span class="sub">tnum · mm:ss</span></div>
+  <div class="tile"><span class="lbl">Best Score</span><span class="num">2,450</span><span class="sub">tnum · grouped</span></div>
+  <div class="tile"><span class="lbl">Coord</span><span class="num">E5</span><span class="sub">board notation</span></div>
+</div>
+</body></html>

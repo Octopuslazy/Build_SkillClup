@@ -1,0 +1,42 @@
+<!doctype html>
+<html><head><meta charset="utf-8"><link rel="stylesheet" href="../colors_and_type.css">
+<style>
+  html,body{margin:0;background:var(--mg-bg-1);color:var(--mg-text-1);font-family:var(--mg-font-ui);padding:24px;}
+  .row{display:flex;gap:16px;flex-wrap:wrap;align-items:flex-start;}
+  .field{display:flex;flex-direction:column;gap:6px;flex:1;min-width:200px;}
+  label{font:var(--mg-eyebrow);text-transform:uppercase;letter-spacing:.14em;color:var(--mg-text-3);}
+  .input{background:var(--mg-surface-1);border:1px solid var(--mg-border);border-radius:12px;padding:12px 14px;color:var(--mg-text-1);font:var(--mg-body);outline:none;display:flex;align-items:center;gap:8px;}
+  .input:focus-within{border-color:#6366F1;box-shadow:0 0 0 3px rgba(99,102,241,.18);}
+  .input input{background:none;border:none;outline:none;color:inherit;font:inherit;flex:1;}
+  .toggle{display:flex;align-items:center;gap:10px;}
+  .switch{width:42px;height:24px;background:#243149;border-radius:999px;position:relative;cursor:pointer;border:1px solid var(--mg-border);}
+  .switch.on{background:linear-gradient(135deg,#6366F1,#22D3EE);border-color:transparent;}
+  .knob{position:absolute;top:2px;left:2px;width:18px;height:18px;background:white;border-radius:999px;transition:transform .2s var(--mg-ease-out);box-shadow:0 2px 6px rgba(0,0,0,.3);}
+  .switch.on .knob{transform:translateX(18px);}
+  svg{width:16px;height:16px;color:var(--mg-text-3);}
+</style></head>
+<body>
+<div class="row">
+  <div class="field">
+    <label>Search</label>
+    <div class="input">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg>
+      <input value="Knight Tour" />
+    </div>
+  </div>
+  <div class="field">
+    <label>Show Path</label>
+    <div class="toggle">
+      <div class="switch on"><div class="knob"></div></div>
+      <span style="font:var(--mg-body);color:var(--mg-text-2)">Enabled</span>
+    </div>
+  </div>
+  <div class="field">
+    <label>Sound</label>
+    <div class="toggle">
+      <div class="switch"><div class="knob"></div></div>
+      <span style="font:var(--mg-body);color:var(--mg-text-2)">Off</span>
+    </div>
+  </div>
+</div>
+</body></html>

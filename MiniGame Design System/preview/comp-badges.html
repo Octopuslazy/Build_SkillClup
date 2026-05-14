@@ -1,0 +1,24 @@
+<!doctype html>
+<html><head><meta charset="utf-8"><link rel="stylesheet" href="../colors_and_type.css">
+<style>
+  html,body{margin:0;background:var(--mg-bg-1);color:var(--mg-text-1);font-family:var(--mg-font-ui);padding:24px;}
+  .row{display:flex;flex-wrap:wrap;gap:10px;align-items:center;}
+  .pill{font:600 11px/1 var(--mg-font-ui);padding:6px 10px;border-radius:999px;text-transform:uppercase;letter-spacing:.1em;display:inline-flex;align-items:center;gap:6px;}
+  .easy{background:rgba(34,197,94,.16);color:#86EFAC;border:1px solid rgba(34,197,94,.35);}
+  .med{background:rgba(245,158,11,.16);color:#FCD34D;border:1px solid rgba(245,158,11,.35);}
+  .hard{background:rgba(239,68,68,.16);color:#FCA5A5;border:1px solid rgba(239,68,68,.35);}
+  .exp{background:linear-gradient(135deg,rgba(168,85,247,.2),rgba(99,102,241,.2));color:#E9D5FF;border:1px solid rgba(168,85,247,.4);}
+  .hot{background:linear-gradient(135deg,#EF4444,#F97316);color:white;border:none;box-shadow:0 4px 14px -6px rgba(239,68,68,.6);}
+  .new{background:rgba(34,211,238,.16);color:#67E8F9;border:1px solid rgba(34,211,238,.35);}
+  .dot{width:6px;height:6px;border-radius:999px;background:currentColor;}
+</style></head>
+<body>
+<div class="row">
+  <span class="pill easy"><span class="dot"></span>Easy</span>
+  <span class="pill med"><span class="dot"></span>Medium</span>
+  <span class="pill hard"><span class="dot"></span>Hard</span>
+  <span class="pill exp"><span class="dot"></span>Expert</span>
+  <span class="pill hot">🔥 HOT</span>
+  <span class="pill new"><span class="dot"></span>New</span>
+</div>
+</body></html>

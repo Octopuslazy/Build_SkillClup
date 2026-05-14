@@ -1,0 +1,36 @@
+<!doctype html>
+<html><head><meta charset="utf-8"><link rel="stylesheet" href="../colors_and_type.css">
+<style>
+  html,body{margin:0;background:var(--mg-bg-1);color:var(--mg-text-1);font-family:var(--mg-font-ui);padding:24px;}
+  .wrap{display:flex;gap:18px;align-items:flex-start;}
+  .board{display:grid;grid-template-columns:repeat(8,1fr);width:280px;aspect-ratio:1;border-radius:10px;overflow:hidden;border:1px solid var(--mg-border);}
+  .cell{display:flex;align-items:center;justify-content:center;font:600 11px var(--mg-font-mono);color:rgba(255,255,255,.35);position:relative;}
+  .l{background:#E2E8F0;color:#475569;}
+  .d{background:#2A3654;color:rgba(255,255,255,.5);}
+  .hi{box-shadow:inset 0 0 0 2px #FACC15, inset 0 0 16px rgba(250,204,21,.55);color:#FDE68A;}
+  .knight{background:radial-gradient(circle,#4F46E5,#1E1B4B);color:#fff;font-size:18px;}
+  .legend{display:flex;flex-direction:column;gap:14px;}
+  .row{display:flex;align-items:center;gap:10px;font:var(--mg-meta);color:var(--mg-text-2);}
+  .sw{width:20px;height:20px;border-radius:4px;}
+</style></head>
+<body>
+<div class="wrap">
+  <div class="board">
+    <div class="cell l">1</div><div class="cell d">13</div><div class="cell l">15</div><div class="cell d">23</div><div class="cell l"></div><div class="cell d"></div><div class="cell l"></div><div class="cell d"></div>
+    <div class="cell d">2</div><div class="cell l">16</div><div class="cell d hi">12</div><div class="cell l hi">10</div><div class="cell d">19</div><div class="cell l"></div><div class="cell d"></div><div class="cell l"></div>
+    <div class="cell l">13</div><div class="cell d">21</div><div class="cell l"></div><div class="cell d knight">♞</div><div class="cell l">14</div><div class="cell d"></div><div class="cell l"></div><div class="cell d"></div>
+    <div class="cell d">18</div><div class="cell l">28</div><div class="cell d"></div><div class="cell l"></div><div class="cell d"></div><div class="cell l"></div><div class="cell d"></div><div class="cell l"></div>
+    <div class="cell l"></div><div class="cell d"></div><div class="cell l"></div><div class="cell d"></div><div class="cell l"></div><div class="cell d"></div><div class="cell l"></div><div class="cell d"></div>
+    <div class="cell d"></div><div class="cell l"></div><div class="cell d"></div><div class="cell l"></div><div class="cell d"></div><div class="cell l"></div><div class="cell d"></div><div class="cell l"></div>
+    <div class="cell l"></div><div class="cell d"></div><div class="cell l"></div><div class="cell d"></div><div class="cell l"></div><div class="cell d"></div><div class="cell l"></div><div class="cell d"></div>
+    <div class="cell d"></div><div class="cell l"></div><div class="cell d"></div><div class="cell l"></div><div class="cell d"></div><div class="cell l"></div><div class="cell d"></div><div class="cell l"></div>
+  </div>
+  <div class="legend">
+    <div class="row"><div class="sw" style="background:#E2E8F0"></div>Light square · #E2E8F0</div>
+    <div class="row"><div class="sw" style="background:#2A3654"></div>Dark square · #2A3654</div>
+    <div class="row"><div class="sw" style="box-shadow:inset 0 0 0 2px #FACC15, inset 0 0 8px rgba(250,204,21,.55);background:#2A3654"></div>Legal move · gold ring + glow</div>
+    <div class="row"><div class="sw" style="background:radial-gradient(circle,#4F46E5,#1E1B4B)"></div>Piece tile · indigo radial</div>
+    <div class="row" style="margin-top:6px;color:var(--mg-text-3);font-size:11px;">Cell radius 8–10px · coordinates JetBrains Mono 11px</div>
+  </div>
+</div>
+</body></html>

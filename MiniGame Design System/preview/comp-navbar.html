@@ -1,0 +1,29 @@
+<!doctype html>
+<html><head><meta charset="utf-8"><link rel="stylesheet" href="../colors_and_type.css">
+<style>
+  html,body{margin:0;background:var(--mg-bg-1);color:var(--mg-text-1);font-family:var(--mg-font-ui);padding:20px;}
+  .nav{display:flex;align-items:center;gap:8px;padding:10px 14px;background:linear-gradient(180deg,rgba(30,41,59,.78),rgba(15,23,42,.78));border:1px solid var(--mg-border);border-radius:16px;backdrop-filter:blur(14px) saturate(140%);}
+  .logo{display:flex;align-items:center;gap:10px;padding-right:18px;border-right:1px solid var(--mg-border);margin-right:10px;}
+  .logo .crown{width:28px;height:28px;background:linear-gradient(135deg,#FACC15,#F59E0B);clip-path:polygon(0 75%,15% 25%,35% 60%,50% 10%,65% 60%,85% 25%,100% 75%,100% 100%,0 100%);}
+  .logo .name{font:700 16px var(--mg-font-display);letter-spacing:-0.01em;}
+  .nav .item{font:500 13px var(--mg-font-ui);padding:8px 14px;border-radius:10px;color:var(--mg-text-2);display:flex;align-items:center;gap:7px;cursor:pointer;}
+  .nav .item.active{background:rgba(99,102,241,.16);color:#A5B4FC;border:1px solid rgba(99,102,241,.4);}
+  .nav .grow{flex:1;}
+  .nav .avatar{width:32px;height:32px;border-radius:999px;background:linear-gradient(135deg,#22D3EE,#6366F1);}
+  svg{width:14px;height:14px;}
+  .iconbtn{width:34px;height:34px;border-radius:10px;display:flex;align-items:center;justify-content:center;background:var(--mg-surface-1);border:1px solid var(--mg-border);color:var(--mg-text-2);position:relative;}
+  .badge{position:absolute;top:-3px;right:-3px;background:#EF4444;color:white;font:700 9px var(--mg-font-mono);padding:1px 5px;border-radius:999px;border:2px solid var(--mg-bg-1);}
+</style></head>
+<body>
+<div class="nav">
+  <div class="logo"><div class="crown"></div><div class="name">MINI<span style="background:var(--mg-grad-text);-webkit-background-clip:text;background-clip:text;color:transparent">GAME</span></div></div>
+  <div class="item active"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 8h4M6 12h4M14 10h4"/><rect x="2" y="6" width="20" height="12" rx="2"/></svg>Games</div>
+  <div class="item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/></svg>Daily</div>
+  <div class="item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9V2h12v7"/><path d="M6 9a6 6 0 0 0 12 0"/><path d="M9 22h6M12 17v5"/></svg>Leaderboard</div>
+  <div class="item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="12 2 15 9 22 9 17 14 19 21 12 17 5 21 7 14 2 9 9 9 12 2"/></svg>Achievements</div>
+  <div class="grow"></div>
+  <div class="iconbtn"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg></div>
+  <div class="iconbtn"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 8a6 6 0 1 1 12 0c0 7 3 9 3 9H3s3-2 3-9"/><path d="M10 21a2 2 0 0 0 4 0"/></svg><span class="badge">2</span></div>
+  <div class="avatar"></div>
+</div>
+</body></html>

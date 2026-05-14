@@ -1,0 +1,25 @@
+<!doctype html>
+<html><head><meta charset="utf-8"><link rel="stylesheet" href="../colors_and_type.css">
+<style>
+  html,body{margin:0;background:var(--mg-bg-1);color:var(--mg-text-1);font-family:var(--mg-font-ui);padding:24px;}
+  .row{display:flex;flex-wrap:wrap;gap:12px;align-items:center;}
+  .btn{font:600 14px/1 var(--mg-font-ui);padding:12px 18px;border-radius:12px;border:1px solid transparent;cursor:pointer;display:inline-flex;align-items:center;gap:8px;transition:transform var(--mg-dur-fast) var(--mg-ease-out), box-shadow var(--mg-dur-base) var(--mg-ease-out);}
+  .primary{background:var(--mg-grad-primary);color:white;box-shadow:0 8px 22px -10px rgba(99,102,241,.7);}
+  .primary:hover{box-shadow:0 12px 32px -10px rgba(99,102,241,.9);}
+  .accent{background:var(--mg-grad-accent);color:#0F172A;}
+  .ghost{background:var(--mg-surface-1);color:var(--mg-text-1);border-color:var(--mg-border);}
+  .ghost:hover{background:var(--mg-surface-2);}
+  .danger{background:rgba(239,68,68,.12);color:#FCA5A5;border-color:rgba(239,68,68,.4);}
+  .icon-only{padding:11px;border-radius:12px;background:var(--mg-surface-1);border:1px solid var(--mg-border);color:var(--mg-text-2);}
+  .dot{width:6px;height:6px;border-radius:999px;background:currentColor;display:inline-block;}
+  svg{width:16px;height:16px;}
+</style></head>
+<body>
+<div class="row">
+  <button class="btn primary"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="6 4 20 12 6 20 6 4" fill="currentColor"/></svg>Play Now</button>
+  <button class="btn accent">Play Challenge</button>
+  <button class="btn ghost">Show Path</button>
+  <button class="btn danger"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="1 4 1 10 7 10"/><path d="M3.51 15a9 9 0 1 0 2.13-9.36L1 10"/></svg>Restart</button>
+  <button class="btn icon-only" aria-label="Settings"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 1 1-4 0v-.09a1.65 1.65 0 0 0-1-1.51 1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 1 1 0-4h.09a1.65 1.65 0 0 0 1.51-1 1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 1 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 1 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg></button>
+</div>
+</body></html>

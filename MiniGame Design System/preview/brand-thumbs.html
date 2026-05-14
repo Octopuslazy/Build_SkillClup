@@ -1,0 +1,46 @@
+<!doctype html>
+<html><head><meta charset="utf-8"><link rel="stylesheet" href="../colors_and_type.css">
+<style>
+  html,body{margin:0;background:var(--mg-bg-1);color:var(--mg-text-1);font-family:var(--mg-font-ui);padding:24px;}
+  .grid{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;}
+  .thumb{position:relative;aspect-ratio:1/1;border-radius:14px;overflow:hidden;display:flex;align-items:center;justify-content:center;background:radial-gradient(120% 90% at 50% 0%, rgba(99,102,241,.35), transparent 60%), linear-gradient(180deg,#1B2440,#0F172A);}
+  .thumb .icon{font-size:84px;filter:drop-shadow(0 16px 32px rgba(99,102,241,.65));}
+  .thumb.knight{background:radial-gradient(120% 90% at 50% 0%, rgba(168,85,247,.35), transparent 60%), linear-gradient(180deg,#1B1440,#0F0A28);}
+  .thumb.queens{background:radial-gradient(120% 90% at 50% 0%, rgba(245,158,11,.3), transparent 60%), linear-gradient(180deg,#2A1B0F,#1A1208);}
+  .thumb.lights{background:radial-gradient(120% 90% at 50% 0%, rgba(34,211,238,.4), transparent 60%), linear-gradient(180deg,#0B2540,#072031);}
+  .thumb.cube{background:radial-gradient(120% 90% at 50% 0%, rgba(239,68,68,.3), transparent 60%), linear-gradient(180deg,#3B1A28,#1F0F18);}
+  .label{position:absolute;left:10px;bottom:10px;font:var(--mg-eyebrow);text-transform:uppercase;letter-spacing:.16em;color:rgba(255,255,255,.85);}
+</style></head>
+<body>
+<div class="grid">
+  <div class="thumb knight"><div class="icon">♞</div><span class="label">Knight Tour</span></div>
+  <div class="thumb queens"><div class="icon">♛</div><span class="label">8 Queens</span></div>
+  <div class="thumb lights">
+    <svg width="86" height="86" viewBox="0 0 86 86" style="filter:drop-shadow(0 10px 28px rgba(34,211,238,.7))">
+      <g>
+        <rect x="6"  y="6"  width="22" height="22" rx="5" fill="#22D3EE"/>
+        <rect x="32" y="6"  width="22" height="22" rx="5" fill="#1B2A40"/>
+        <rect x="58" y="6"  width="22" height="22" rx="5" fill="#22D3EE"/>
+        <rect x="6"  y="32" width="22" height="22" rx="5" fill="#1B2A40"/>
+        <rect x="32" y="32" width="22" height="22" rx="5" fill="#22D3EE"/>
+        <rect x="58" y="32" width="22" height="22" rx="5" fill="#1B2A40"/>
+        <rect x="6"  y="58" width="22" height="22" rx="5" fill="#22D3EE"/>
+        <rect x="32" y="58" width="22" height="22" rx="5" fill="#1B2A40"/>
+        <rect x="58" y="58" width="22" height="22" rx="5" fill="#22D3EE"/>
+      </g>
+    </svg>
+    <span class="label">Lights Out</span>
+  </div>
+  <div class="thumb cube">
+    <svg width="92" height="92" viewBox="0 0 92 92" style="filter:drop-shadow(0 10px 28px rgba(239,68,68,.5))">
+      <g transform="translate(46 46)">
+        <polygon points="0,-30 26,-15 26,15 0,30 -26,15 -26,-15" fill="#2A1A28"/>
+        <polygon points="0,-30 26,-15 0,0 -26,-15" fill="#EF4444"/>
+        <polygon points="26,-15 26,15 0,30 0,0" fill="#F59E0B"/>
+        <polygon points="-26,-15 0,0 0,30 -26,15" fill="#6366F1"/>
+      </g>
+    </svg>
+    <span class="label">Cube Puzzle</span>
+  </div>
+</div>
+</body></html>
